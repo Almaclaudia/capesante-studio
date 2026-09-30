@@ -268,12 +268,13 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
 
       <div id="contacts" role="region" aria-labelledby="b-cont"><div class="scroll">
             <form id="cform" novalidate>
+              <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
               <p class="talk">Scrivici!</p>
-              <div class="fld"><label for="f-nome"><span class="arrow" aria-hidden="true">↪</span>Nome *</label><input class="inp" id="f-nome" name="nome" autocomplete="name" required></div>
+              <div class="fld"><label for="f-nome"><span class="arrow" aria-hidden="true">↪</span>Nome</label><input class="inp" id="f-nome" name="nome" autocomplete="name"></div>
               <div class="fld"><label for="f-mail"><span class="arrow" aria-hidden="true">↪</span>Email *</label><input class="inp" id="f-mail" name="email" type="email" autocomplete="email" required></div>
               <div class="fld"><span class="lab" id="lab-set"><span class="arrow" aria-hidden="true">↪</span>Il tuo settore</span><div class="multi" data-multi="settore" data-empty="Seleziona uno o più settori"></div></div>
               <div class="fld"><span class="lab" id="lab-serv"><span class="arrow" aria-hidden="true">↪</span>Tipologia di servizio</span><div class="multi" data-multi="servizio" data-empty="Seleziona uno o più servizi"></div></div>
-              <div class="fld"><label for="f-msg"><span class="arrow" aria-hidden="true">↪</span>Messaggio</label><textarea class="inp" id="f-msg" name="messaggio"></textarea></div>
+              <div class="fld"><label for="f-msg"><span class="arrow" aria-hidden="true">↪</span>Messaggio *</label><textarea class="inp" id="f-msg" name="messaggio" required></textarea></div>
               <div class="sendrow"><button class="yellow" type="submit">INVIA</button></div>
               <p class="fnote" id="f-note" aria-live="polite"></p>
             </form>
@@ -372,10 +373,26 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
     btn.addEventListener('click',function(){var o=opts.hidden;opts.hidden=!o;box.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);});
     opts.addEventListener('change',function(){var sel=[].map.call(opts.querySelectorAll('input:checked'),function(i){return i.value;});btn.querySelector('span').textContent=sel.length?sel.join(', '):empty;});
   });
+  /* === FORM CONTATTI ===
+     Incolla qui sotto la chiave che Web3Forms ti manda per email. */
+  var WEB3FORMS_KEY='a2ffbb50-9267-4488-b962-d164d3fcca1b';
   document.getElementById('cform').addEventListener('submit',function(e){
-    e.preventDefault();var ok=true;
-    ['f-nome','f-mail'].forEach(function(id){var f=document.getElementById(id),v=f.value.trim(),bad=!v||(f.type==='email'&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));f.classList.toggle('bad',bad);if(bad)ok=false;});
-    document.getElementById('f-note').textContent=ok?'Prototipo: il modulo funziona, ma non invia davvero.':'Compila nome ed email con un indirizzo valido.';
+    e.preventDefault();var ok=true,note=document.getElementById('f-note'),btn=this.querySelector('button[type="submit"]');
+    var miss=[];['f-mail','f-msg'].forEach(function(id){var f=document.getElementById(id),v=f.value.trim(),bad=!v||(f.type==='email'&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));f.classList.toggle('bad',bad);if(bad){ok=false;miss.push(id==='f-mail'?'un indirizzo email valido':'il messaggio');}});
+    if(!ok){note.textContent='Per inviare servono '+miss.join(' e ')+'.';document.getElementById(miss[0]==='il messaggio'?'f-msg':'f-mail').focus();return;}
+    if(this.querySelector('[name="botcheck"]').checked)return;
+    if(WEB3FORMS_KEY.indexOf('INCOLLA')===0){note.textContent='Il modulo non è ancora collegato alla casella email.';return;}
+    var pick=function(n){return [].map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(i){return i.value;}).join(', ')||'—';};
+    var nome=document.getElementById('f-nome').value.trim();
+    var data={access_key:WEB3FORMS_KEY,subject:'Nuovo contatto dal sito — '+(nome||document.getElementById('f-mail').value.trim()),from_name:'Sito Le CapeSante',
+      nome:nome||'—',email:document.getElementById('f-mail').value.trim(),settore:pick('settore'),servizio:pick('servizio'),
+      messaggio:document.getElementById('f-msg').value.trim()};
+    btn.disabled=true;note.textContent='Invio in corso…';var form=this;
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json();})
+      .then(function(r){if(r.success){form.reset();document.querySelectorAll('.multi>button span').forEach(function(sp){sp.textContent=sp.closest('.multi').getAttribute('data-empty');});note.textContent='Grazie! Il messaggio è arrivato, ti rispondiamo presto.';}else{note.textContent='Il messaggio non è partito. Riprova, oppure scrivici a lecapesante.studio@gmail.com';}})
+      .catch(function(){note.textContent='Il messaggio non è partito. Riprova, oppure scrivici a lecapesante.studio@gmail.com';})
+      .then(function(){btn.disabled=false;});
   });
 
   /* ---------- PORTFOLIO / CASE STUDY (retro) ---------- */
