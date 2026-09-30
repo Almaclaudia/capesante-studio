@@ -9,7 +9,7 @@
 <meta property="og:description" content="Creative direction, brand identity & siti web.">
 <link rel="icon" type="image/png" href="assets/conchiglia.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=Lacquer&family=Space+Grotesk:wght@300;400;600&family=Archivo:wght@400;900&family=Permanent+Marker&family=Afacad:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=Lacquer&family=Space+Grotesk:wght@300;400;600&family=Archivo:wght@400;900&family=Permanent+Marker&family=Homemade+Apple&family=Afacad:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: card a tutto schermo che si gira (fronte = home su video, retro = portfolio split 50/50) */
 :root{
@@ -37,6 +37,10 @@ a{color:inherit}
 #front{pointer-events:auto}
 #back{transform:rotateY(180deg);background:var(--paper);pointer-events:none;display:flex}
 #stage.flipped #front{pointer-events:none}
+#front,#back{transition:visibility 0s .5s}
+#back{visibility:hidden}
+#stage.flipped #back{visibility:visible}
+#stage.flipped #front{visibility:hidden}
 #stage.flipped #back{pointer-events:auto}
 
 /* ---------- VIDEO / SEGNAPOSTO ---------- */
@@ -98,7 +102,7 @@ a{color:inherit}
 #contacts.open{height:88%}
 #contacts .scroll{height:100%;overflow-y:auto;overscroll-behavior:contain;padding:34px 37px 40px;scrollbar-width:thin}
 #contacts form{max-width:520px;margin:0 auto}
-.talk{font-family:var(--hand);font-size:30px;color:var(--red);margin:0 0 4px;transform:rotate(-1.5deg);transform-origin:left}
+.talk{font-family:'Homemade Apple','Brush Script MT',cursive;font-size:30px;line-height:1.5;color:var(--ink);margin:0 0 6px;transform:rotate(-2deg);transform-origin:left}
 .fld{display:flex;flex-direction:column;gap:6px;margin-top:14px}
 .fld>label,.fld>.lab{display:flex;align-items:center;gap:10px;font-family:var(--text);font-size:16px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 .arrow{font-size:22px;color:var(--red);transform:rotate(-10deg);display:inline-block;line-height:1}
@@ -213,13 +217,13 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
   .note{font-size:16px;max-width:220px}
   .navc{position:absolute;inset:0;transform:none;display:block;pointer-events:none}
   .navc .navitem{position:absolute;right:20px;pointer-events:auto}
-  .navc .navitem:nth-child(1){bottom:calc(28px + env(safe-area-inset-bottom,0px))}
-  .navc .navitem:nth-child(2){top:50%;transform:translateY(-50%)}
+  .navc .navitem:nth-child(1){top:50%;transform:translateY(-50%)}
+  .navc .navitem:nth-child(2){top:calc(26px + (50% - 26px) / 2);transform:translateY(-50%)}
   .navlab{font-size:14px}
   .corner{top:26px;right:20px;font-size:14px}
-  .bigname{left:16px;bottom:calc(20px + env(safe-area-inset-bottom,0px));width:auto;display:block}
-  .bigname .bshell{width:92px}
-  .bigname .wm{position:absolute;left:0;top:-12px;width:min(calc(100vh - 330px),560px);height:auto;margin:0;transform:rotate(-90deg);transform-origin:0 0}
+  .bigname{left:20px;right:20px;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:auto;display:grid;grid-template-columns:19% 1fr;column-gap:3%;align-items:end}
+  .bigname .bshell{width:100%}
+  .bigname .wm{position:static;width:100%;transform:none}
   .pane{display:none}
   .stackwrap{width:100%;position:relative;overflow:hidden}
   .frames,.spacer{display:none}
