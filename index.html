@@ -191,6 +191,11 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
 .fitb{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:150%;max-width:none;height:auto;display:block}
 #back.case{flex-direction:row-reverse}
 #back.case .mini{display:none}
+.homebtn{all:unset;cursor:pointer;display:block}
+.caseshell{display:none}
+#back.case .caseshell{all:unset;cursor:pointer;display:block;position:absolute;left:28px;top:24px;z-index:6}
+#back.case .caseshell img{height:72px;width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(255,255,255,.9)) drop-shadow(0 0 10px rgba(255,255,255,.7))}
+@media (max-width:820px){#back.case .caseshell{display:none}}
 #back.case .pane h1{top:40px}
 #back.case .pane .txt{top:130px;bottom:40px;max-width:520px;overflow-y:auto;text-transform:none;font-size:16px;font-weight:400;line-height:1.45;display:flex;flex-direction:column;scrollbar-width:thin}
 #back.case .pane .txt>:first-child{margin-top:auto}
@@ -335,9 +340,10 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
 
     <!-- ===== RETRO ===== -->
     <section class="face" id="back" aria-label="Portfolio">
-      <div class="mobback"><img src="assets/conchiglia.png" alt="Le CapeSante" style="height:44px;width:auto"><span class="mttl" id="mttl"></span><button class="corner" id="mbc" style="position:static;color:var(--ink);text-shadow:none" type="button" data-unflip="1">Back</button></div>
+      <div class="mobback"><button class="homebtn" type="button" data-home aria-label="Torna alla home"><img src="assets/conchiglia.png" alt="Le CapeSante" style="height:44px;width:auto;display:block"></button><span class="mttl" id="mttl"></span><button class="corner" id="mbc" style="position:static;color:var(--ink);text-shadow:none" type="button" data-unflip="1">Back</button></div>
+      <button class="caseshell" type="button" data-home aria-label="Torna alla home"><img src="assets/conchiglia.png" alt=""></button>
       <aside class="pane">
-        <button class="mini" type="button" data-unflip="1" aria-label="Torna alla home"><img src="assets/conchiglia.png" alt=""></button>
+        <button class="mini" type="button" data-home aria-label="Torna alla home"><img src="assets/conchiglia.png" alt=""></button>
         <h1 class="fade" id="pname"></h1>
         <p class="txt fade" id="ptext"></p>
         <span class="count" id="pcount"></span>
@@ -399,6 +405,7 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
   function setTongue(o){tongue.classList.toggle('open',o);bCosa.setAttribute('aria-expanded',o);if(o){tongue.querySelector('.scroll').scrollTop=0;setContacts(false);}}
   function setContacts(o){contacts.classList.toggle('open',o);bCont.setAttribute('aria-expanded',o);if(o)setTongue(false);}
   function closeAll(){setTongue(false);setContacts(false);}
+  document.querySelectorAll('[data-home]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();closeAll();if(stage.classList.contains('flipped'))flip(false);});});
   bCosa.addEventListener('click',function(){setTongue(!tongue.classList.contains('open'));});
   bCont.addEventListener('click',function(){setContacts(!contacts.classList.contains('open'));});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll();});
