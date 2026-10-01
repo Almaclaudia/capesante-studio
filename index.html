@@ -354,7 +354,7 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
   /* ---------- DATI ---------- */
   var CLIENTS=[
     {id:'vulcanica',name:'Vulcanica',bg:'#f3acce',ink:'#1a1715',photo:'',img:'assets/vulcanica-portfolio.jpg',fit:'bottom',more:true,
-     text:'Vini vulcanici delle Canarie, portati in Italia. Per Vulcanica abbiamo costruito tutto da zero: il nome, l’identità, le foto scattate sulle isole, le illustrazioni a mano, il sito e il lancio su Instagram.'}
+     text:'Vini delle Canarie. Da zero.\nVulcanica porta i vini vulcanici delle isole Canarie in Italia. Per un territorio sconosciuto al mercato, abbiamo costruito tutto: nome, identità visiva, illustrazioni, fotografia scattata sulle isole, sito web.'}
   ];
   var CASES={
     vulcanica:{name:'Vulcanica',bg:'#d9d6d0',ink:'#1a1715',sections:[
@@ -517,7 +517,7 @@ textarea.inp{height:78px;padding-top:8px;resize:vertical;border:1.5px solid var(
     setTimeout(function(){if(!fixed)pname.textContent=it.name;ptext.innerHTML=it.html;var fc=frames.querySelector('.car');if(fc){var kk=(+fc.dataset.i||0)%(fc.firstChild.children.length-1);ptext.querySelectorAll('.cs-sub[data-k]').forEach(function(h){h.classList.toggle('hot',+h.dataset.k===kk);});}pcount.textContent=String(i+1).padStart(2,'0')+' / '+String(items.length).padStart(2,'0');parts.forEach(function(p){p.classList.remove('out');});},now?0:170);
   }
   function more(id){return ' <button type="button" data-case="'+id+'">MORE+</button>';}
-  function showPortfolio(){render(CLIENTS.map(function(c){return{name:c.name,bg:c.bg,ink:c.ink,photo:c.photo,img:c.img,fit:c.fit,html:esc(c.text)+(c.more?more(c.id):'')};}),null);}
+  function showPortfolio(){render(CLIENTS.map(function(c){return{name:c.name,bg:c.bg,ink:c.ink,photo:c.photo,img:c.img,fit:c.fit,html:esc(c.text).replace(/\n/g,'<br>')+(c.more?more(c.id):'')};}),null);}
   function showCase(id){var cs=CASES[id];render(cs.sections.map(function(s){return{name:cs.name,bg:s.bg||cs.bg,ink:cs.ink,photo:s.photo||'',img:s.img,pos:s.pos,fit:s.fit,same:s.same,video:s.video,poster:s.poster,collage:s.collage,site:s.site,url:s.url,custom:s.custom,carousel:s.carousel,html:s.html||esc(s.text)};}),cs.name);}
   function carTick(){
     document.querySelectorAll('.car').forEach(function(c){
